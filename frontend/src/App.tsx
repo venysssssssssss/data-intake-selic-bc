@@ -88,7 +88,7 @@ function Dashboard() {
 
   // Auto-Sync Logic (Real-time Simulation)
   useEffect(() => {
-      let intervalId: NodeJS.Timeout;
+      let intervalId: ReturnType<typeof setInterval>;
       if (autoSync) {
           // Poll BCB endpoint via backend every 10 seconds if enabled
           intervalId = setInterval(() => {
