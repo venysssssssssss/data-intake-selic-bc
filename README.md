@@ -89,4 +89,19 @@ The Dashboard will be available at `http://localhost:5173`.
     │   └── api.ts       # Axios client
     └── package.json
 ```
+
+## Deployment
+
+### GitHub Pages (Frontend Only)
+
+The frontend is configured to deploy automatically to GitHub Pages via GitHub Actions.
+
+1.  Push your changes to GitHub.
+2.  Go to your repository **Settings** > **Pages**.
+3.  Under **Source**, select **Deploy from a branch**.
+4.  Verify that the branch is `gh-pages` (this branch is created automatically by the Action after the first successful run).
+5.  Visit your deployed site!
+
+**Note:** The deployed frontend will try to connect to the backend. Since the backend runs locally, the deployed site **will not work fully** (API calls will fail) unless you also deploy the backend to a public cloud provider (e.g., Render, Railway, AWS) and update the API URL in the frontend configuration.
+
 # data-intake-selic-bc
