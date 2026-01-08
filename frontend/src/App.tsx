@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from './api';
 import { HealthCheck, SelicDataPoint, MetaSelicData } from './types';
 import { DataChart } from './components/DataChart';
