@@ -1,4 +1,95 @@
-export const translations = {
+export interface Translation {
+  appTitle: string;
+  subtitle: string;
+  refresh: string;
+  ingest: string;
+  ingesting: string;
+  autoSync: string;
+  systemHealth: string;
+  lastCheck: string;
+  database: string;
+  qualityAlerts: string;
+  noGaps: string;
+  noData: string;
+  gapDetected: string;
+  invalid: string;
+  valid: string;
+  rawData: string;
+  date: string;
+  value: string;
+  status: string;
+  trendTitle: string;
+  
+  // Key Indicators
+  metaSelicTitle: string;
+  lastMonthlyTitle: string;
+  metaSelicDesc: string;
+  
+  // Educational Section
+  eduTitle: string;
+  whatIsSelicTitle: string;
+  whatIsSelicText: string;
+  impactTitle: string;
+  impactText: string;
+  reflectionTitle: string;
+  reflectionText: string;
+
+  // Analytics Section
+  analyticsTitle: string;
+  yearlyAvgTitle: string;
+  yearlyAvgDesc: string;
+  distributionTitle: string;
+  distributionDesc: string;
+  rangeLow: string;
+  rangeMed: string;
+  rangeHigh: string;
+
+  // New Analytics Keys
+  advMarketIntel: string;
+  monetaryPolicyCycle: string;
+  cycleAnalysis: string;
+  cyclePhase: string;
+  historicalContext: string;
+  histContextAnalysis: string;
+  marketStability: string;
+  stabilityAnalysis: string;
+  realRateProxy: string;
+  realRateAnalysis: string;
+  seasonalityAnalysis: string;
+  seasonalityDesc: string;
+  interactiveRoi: string;
+  roiDesc: string;
+  forecastModel: string;
+  forecastDesc: string;
+  
+  // Chart & Card Labels
+  momentumScore: string;
+  cycleMagnitude: string;
+  frequencyDist: string;
+  riskScore: string;
+  nominal: string;
+  inflation: string;
+  realRate: string;
+  approxDisclaimer: string;
+  histAvg: string;
+  forecastStart: string;
+  selicPercent: string;
+  
+  // ROI Simulator
+  roiTitle: string;
+  initialInvestment: string;
+  durationMonths: string;
+  totalReturn: string;
+  profit: string;
+  roiDisclaimer: string;
+
+  // Schema Viewer
+  schemaTitle: string;
+  schemaDesc: string;
+  schemaFooter: string;
+}
+
+export const translations: Record<string, Translation> = {
   en: {
     appTitle: "Data Intake Pro",
     subtitle: "Observability & Ingestion Platform (Series 4390)",
@@ -43,7 +134,51 @@ export const translations = {
     distributionDesc: "Categorizes the historical data into ranges. It helps identify the 'normal' operating mode of the Brazilian economy (Low, Medium, or High rates).",
     rangeLow: "Low (< 5%)",
     rangeMed: "Medium (5-10%)",
-    rangeHigh: "High (> 10%)"
+    rangeHigh: "High (> 10%)",
+
+    // New Analytics
+    advMarketIntel: 'Advanced Market Intelligence',
+    monetaryPolicyCycle: 'Monetary Policy Cycle',
+    cycleAnalysis: 'The central bank is currently in a ',
+    cyclePhase: ' Phase',
+    historicalContext: 'Historical Context',
+    histContextAnalysis: 'Current rates are historically ',
+    marketStability: 'Market Stability',
+    stabilityAnalysis: 'Market volatility is currently considered ',
+    realRateProxy: 'Real Rate Proxy',
+    realRateAnalysis: 'Estimated Real Interest Rate (using 3.5% inflation target) is ',
+    seasonalityAnalysis: 'Seasonality Analysis',
+    seasonalityDesc: 'Average Selic rate by month (Historical)',
+    interactiveRoi: 'Interactive ROI',
+    roiDesc: 'Simulate returns based on current rates',
+    forecastModel: '6-Month Forecast Model',
+    forecastDesc: 'Linear regression projection based on last 12 months trend',
+
+    // Labels
+    momentumScore: 'Momentum Score',
+    cycleMagnitude: 'Cycle Magnitude',
+    frequencyDist: 'Frequency distribution of Selic rates (All-time)',
+    riskScore: 'Risk Score',
+    nominal: 'Nominal',
+    inflation: 'Inflation (T)',
+    realRate: 'Real Rate',
+    approxDisclaimer: '*Approximation assuming constant 3.5% inflation target.',
+    histAvg: 'Hist. Avg',
+    forecastStart: 'Forecast Start',
+    selicPercent: 'Selic %',
+
+    // ROI
+    roiTitle: 'ROI Simulator',
+    initialInvestment: 'Initial Investment (R$)',
+    durationMonths: 'Duration (Months)',
+    totalReturn: 'Total Return',
+    profit: 'Profit',
+    roiDisclaimer: '*Hypothetical projection using constant current Selic rate. Not financial advice.',
+
+    // Schema
+    schemaTitle: 'Data Contract (Schema)',
+    schemaDesc: 'Contract for Series 4390',
+    schemaFooter: 'Strict validation enforced by Pydantic on Ingest.'
   },
   pt: {
     appTitle: "Data Intake Pro",
@@ -89,6 +224,50 @@ export const translations = {
     distributionDesc: "Categoriza os dados históricos em faixas. Ajuda a identificar o modo de operação 'normal' da economia brasileira (Juros Baixos, Médios ou Altos).",
     rangeLow: "Baixo (< 5%)",
     rangeMed: "Médio (5-10%)",
-    rangeHigh: "Alto (> 10%)"
+    rangeHigh: "Alto (> 10%)",
+
+    // New Analytics
+    advMarketIntel: 'Inteligência de Mercado Avançada',
+    monetaryPolicyCycle: 'Ciclo de Política Monetária',
+    cycleAnalysis: 'O Banco Central está atualmente em fase de ',
+    cyclePhase: '', // Phrase structure differs, handled in component or genericized
+    historicalContext: 'Contexto Histórico',
+    histContextAnalysis: 'As taxas atuais são historicamente ',
+    marketStability: 'Estabilidade do Mercado',
+    stabilityAnalysis: 'A volatilidade do mercado é considerada ',
+    realRateProxy: 'Proxy de Juro Real',
+    realRateAnalysis: 'Juro Real estimado (meta de inflação de 3.5%) é ',
+    seasonalityAnalysis: 'Análise de Sazonalidade',
+    seasonalityDesc: 'Taxa Selic média por mês (Histórico)',
+    interactiveRoi: 'Simulador de ROI',
+    roiDesc: 'Simule retornos com base nas taxas atuais',
+    forecastModel: 'Modelo de Previsão (6 Meses)',
+    forecastDesc: 'Projeção de regressão linear baseada na tendência dos últimos 12 meses',
+
+    // Labels
+    momentumScore: 'Score de Momento',
+    cycleMagnitude: 'Magnitude do Ciclo',
+    frequencyDist: 'Distribuição de frequência das taxas (Todo o período)',
+    riskScore: 'Score de Risco',
+    nominal: 'Nominal',
+    inflation: 'Inflação (Meta)',
+    realRate: 'Juro Real',
+    approxDisclaimer: '*Aproximação assumindo meta de inflação constante de 3.5%.',
+    histAvg: 'Méd. Hist.',
+    forecastStart: 'Início Previsão',
+    selicPercent: 'Selic %',
+
+    // ROI
+    roiTitle: 'Simulador de ROI',
+    initialInvestment: 'Investimento Inicial (R$)',
+    durationMonths: 'Duração (Meses)',
+    totalReturn: 'Retorno Total',
+    profit: 'Lucro',
+    roiDisclaimer: '*Projeção hipotética usando taxa Selic atual constante. Não é recomendação financeira.',
+
+    // Schema
+    schemaTitle: 'Contrato de Dados (Schema)',
+    schemaDesc: 'Contrato para Série 4390',
+    schemaFooter: 'Validação estrita forçada pelo Pydantic na ingestão.'
   }
 };

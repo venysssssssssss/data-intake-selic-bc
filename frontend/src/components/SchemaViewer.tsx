@@ -1,28 +1,37 @@
 import React from 'react';
-import { FileJson } from 'lucide-react';
+import { Database, FileJson, CheckCircle2 } from 'lucide-react';
+import { useUi } from '../contexts/UiContext';
 
 export const SchemaViewer: React.FC = () => {
+    const { t } = useUi();
   const schema = {
-    name: "SelicDataPoint",
-    description: "Contract for Series 4390",
-    fields: [
-      { name: "data", type: "string", format: "DD/MM/YYYY", required: true },
-      { name: "valor", type: "float", description: "Percentage value", required: true }
+    "model": "SelicDataPoint",
+    "fields": [
+      { "name": "data", "type": "string", "format": "DD/MM/YYYY", "required": true },
+      { "name": "valor", "type": "float", "description": "Annualized Rate %", "required": true },
+      { "name": "ingested_at", "type": "datetime", "default": "now()", "required": false }
     ]
   };
 
   return (
     <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-md transition-colors duration-200">
-      <h3 className="text-md font-semibold text-slate-700 dark:text-slate-200 mb-3 flex items-center">
-        <FileJson className="w-5 h-5 mr-2 text-indigo-500" />
-        Data Contract (Schema)
-      </h3>
-      <div className="bg-slate-900 text-slate-50 p-3 rounded text-xs font-mono overflow-auto border border-slate-700">
-        <pre>{JSON.stringify(schema, null, 2)}</pre>
-      </div>
-      <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-        Strict validation enforced by Pydantic on Ingest.
-      </p>
+        <h3 className="text-md font-semibold text-slate-700 dark:text-slate-200 mb-3 flex items-center">
+            <Database className="w-5 h-5 mr-2 text-indigo-500" />
+            {t.schemaTitle}
+        </h3>
+        <div className="bg-slate-50 dark:bg-slate-900 rounded p-3 border border-slate-200 dark:border-slate-700 font-mono text-xs">
+            <div className="flex items-center justify-between mb-2 border-b border-slate-200 dark:border-slate-700 pb-2">
+                <span className="text-slate-500 dark:text-slate-400">{t.schemaDesc}</span>
+                <FileJson className="w-4 h-4 text-slate-400" />
+            </div>
+            <pre className="text-slate-600 dark:text-slate-300 overflow-x-auto">
+                {JSON.stringify(schema, null, 2)}
+            </pre>
+            <div className="mt-2 flex items-center text-green-600 dark:text-green-500 gap-1">
+                <CheckCircle2 className="w-3 h-3" />
+                <span>{t.schemaFooter}</span>
+            </div>
+        </div>
     </div>
   );
 };

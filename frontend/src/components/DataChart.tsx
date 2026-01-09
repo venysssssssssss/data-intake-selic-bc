@@ -57,7 +57,7 @@ export const DataChart: React.FC<DataChartProps> = ({ data }) => {
             dataKey="valor" 
             stroke="#8884d8" 
             activeDot={{ r: 8 }} 
-            name="Selic %" 
+            name={t.selicPercent} 
           />
         </LineChart>
       </ResponsiveContainer>

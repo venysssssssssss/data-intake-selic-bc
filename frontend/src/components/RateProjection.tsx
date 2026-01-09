@@ -2,8 +2,10 @@ import React, { useMemo } from 'react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid, ReferenceLine } from 'recharts';
 import { SelicDataPoint } from '../types';
 import { calculateProjection, parseDate } from '../utils/analyticsEngine';
+import { useUi } from '../contexts/UiContext';
 
 export const RateProjection: React.FC<{ data: SelicDataPoint[] }> = ({ data }) => {
+    const { t } = useUi();
     const chartData = useMemo(() => {
         const sorted = [...data].sort((a, b) => parseDate(a.data).getTime() - parseDate(b.data).getTime());
         const historical = sorted.slice(-12).map(d => ({
@@ -43,7 +45,7 @@ export const RateProjection: React.FC<{ data: SelicDataPoint[] }> = ({ data }) =
                     />
                      {/* Overlay for projection segment logic would be complex in single Area, 
                          so we trust the visual continuity or use ReferenceLine to mark start of projection */}
-                    <ReferenceLine x={chartData[chartData.length - 7]?.date} stroke="green" strokeDasharray="3 3" label="Forecast Start" />
+                    <ReferenceLine x={chartData[chartData.length - 7]?.date} stroke="green" strokeDasharray="3 3" label={t.forecastStart} />
                 </AreaChart>
             </ResponsiveContainer>
         </div>

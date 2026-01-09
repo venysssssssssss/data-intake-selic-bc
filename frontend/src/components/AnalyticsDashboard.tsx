@@ -80,18 +80,18 @@ export const AnalyticsDashboard: React.FC<Props> = ({ data }) => {
     <div className="space-y-8">
       <div className="flex items-center gap-3 mb-6">
         <Activity className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Advanced Market Intelligence</h2>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{t.advMarketIntel}</h2>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
           {/* 1. Cycle & Trend Analysis */}
           <InsightCard
-            title="Monetary Policy Cycle"
+            title={t.monetaryPolicyCycle}
             icon={<TrendingUp className="w-5 h-5 text-blue-500" />}
             color="text-blue-600 dark:text-blue-400"
-            analysis="The central bank is currently in a "
-            highlight={`${analysis.cycle.currentPhase} Phase`}
+            analysis={t.cycleAnalysis}
+            highlight={`${analysis.cycle.currentPhase}${t.cyclePhase}`}
           >
              <div className="h-64">
                 <ResponsiveContainer width="100%" height="100%">
@@ -117,22 +117,22 @@ export const AnalyticsDashboard: React.FC<Props> = ({ data }) => {
                             fill="url(#colorVal)" 
                         />
                         {/* Trend Line (Simple visualization) */}
-                        <ReferenceLine y={analysis.distribution.historicalAverage} stroke="orange" strokeDasharray="3 3" label="Hist. Avg" />
+                        <ReferenceLine y={analysis.distribution.historicalAverage} stroke="orange" strokeDasharray="3 3" label={t.histAvg} />
                     </AreaChart>
                 </ResponsiveContainer>
                 <div className="mt-4 text-xs text-slate-500 flex justify-between">
-                    <span>Momentum Score: {analysis.momentum.shortTermSlope.toFixed(2)}</span>
-                    <span>Cycle Magnitude: {analysis.cycle.magnitude > 0 ? '+' : ''}{analysis.cycle.magnitude.toFixed(2)}%</span>
+                    <span>{t.momentumScore}: {analysis.momentum.shortTermSlope.toFixed(2)}</span>
+                    <span>{t.cycleMagnitude}: {analysis.cycle.magnitude > 0 ? '+' : ''}{analysis.cycle.magnitude.toFixed(2)}%</span>
                 </div>
              </div>
           </InsightCard>
 
           {/* 2. Historical Context (Distribution) */}
           <InsightCard
-            title="Historical Context"
+            title={t.historicalContext}
             icon={<History className="w-5 h-5 text-purple-500" />}
             color="text-purple-600 dark:text-purple-400"
-            analysis="Current rates are historically "
+            analysis={t.histContextAnalysis}
             highlight={`${analysis.distribution.classification} (${Math.round(analysis.distribution.percentile)}th Percentile)`}
           >
              <div className="h-64">
@@ -146,17 +146,17 @@ export const AnalyticsDashboard: React.FC<Props> = ({ data }) => {
                     </BarChart>
                 </ResponsiveContainer>
                 <div className="mt-4 text-xs text-slate-500 text-center">
-                    Frequency distribution of Selic rates (All-time)
+                    {t.frequencyDist}
                 </div>
              </div>
           </InsightCard>
 
           {/* 3. Volatility Analysis */}
           <InsightCard
-            title="Market Stability"
+            title={t.marketStability}
             icon={<Gauge className="w-5 h-5 text-emerald-500" />}
             color="text-emerald-600 dark:text-emerald-400"
-            analysis="Market volatility is currently considered "
+            analysis={t.stabilityAnalysis}
             highlight={analysis.volatility.classification}
           >
              <div className="flex items-center justify-center h-64 relative">
@@ -176,7 +176,7 @@ export const AnalyticsDashboard: React.FC<Props> = ({ data }) => {
                         {Math.round(analysis.volatility.score)}/100
                     </text>
                     <text x="100" y="40" textAnchor="middle" className="text-xs fill-slate-400">
-                        Risk Score
+                        {t.riskScore}
                     </text>
                 </svg>
              </div>
@@ -184,36 +184,36 @@ export const AnalyticsDashboard: React.FC<Props> = ({ data }) => {
 
           {/* 4. Real Rate Proxy (Nominal vs Inflation Target Proxy) */}
           <InsightCard
-            title="Real Rate Proxy"
+            title={t.realRateProxy}
             icon={<Anchor className="w-5 h-5 text-amber-500" />}
             color="text-amber-600 dark:text-amber-400"
-            analysis="Estimated Real Interest Rate (using 3.5% inflation target) is "
+            analysis={t.realRateAnalysis}
             highlight={`~${(chartData[chartData.length-1]?.value - 3.5).toFixed(2)}%`}
           >
               <div className="h-64 flex flex-col justify-center gap-4">
                   <div className="flex items-center gap-4">
-                      <div className="w-24 text-right text-sm font-medium text-slate-500">Nominal</div>
+                      <div className="w-24 text-right text-sm font-medium text-slate-500">{t.nominal}</div>
                       <div className="flex-1 h-4 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                           <div className="h-full bg-blue-500" style={{width: '100%'}}></div>
                       </div>
                       <div className="w-16 text-sm font-bold text-slate-800 dark:text-slate-100">{chartData[chartData.length-1]?.value}%</div>
                   </div>
                   <div className="flex items-center gap-4">
-                      <div className="w-24 text-right text-sm font-medium text-slate-500">Inflation (T)</div>
+                      <div className="w-24 text-right text-sm font-medium text-slate-500">{t.inflation}</div>
                       <div className="flex-1 h-4 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                           <div className="h-full bg-red-400" style={{width: `${(3.5 / chartData[chartData.length-1]?.value) * 100}%`}}></div>
                       </div>
                       <div className="w-16 text-sm font-bold text-slate-800 dark:text-slate-100">3.5%</div>
                   </div>
                    <div className="flex items-center gap-4">
-                      <div className="w-24 text-right text-sm font-medium text-slate-500">Real Rate</div>
+                      <div className="w-24 text-right text-sm font-medium text-slate-500">{t.realRate}</div>
                       <div className="flex-1 h-4 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
                           <div className="h-full bg-green-500" style={{width: `${((chartData[chartData.length-1]?.value - 3.5) / chartData[chartData.length-1]?.value) * 100}%`}}></div>
                       </div>
                       <div className="w-16 text-sm font-bold text-slate-800 dark:text-slate-100">{(chartData[chartData.length-1]?.value - 3.5).toFixed(2)}%</div>
                   </div>
                   <p className="text-xs text-slate-400 mt-2 text-center">
-                      *Approximation assuming constant 3.5% inflation target.
+                      {t.approxDisclaimer}
                   </p>
               </div>
           </InsightCard>
@@ -223,21 +223,21 @@ export const AnalyticsDashboard: React.FC<Props> = ({ data }) => {
       {/* NEW SECTION: Predictive & Seasonal */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <InsightCard
-            title="Seasonality Analysis"
+            title={t.seasonalityAnalysis}
             icon={<Calendar className="w-5 h-5 text-indigo-500" />}
             color="text-indigo-600 dark:text-indigo-400"
             className="lg:col-span-2"
-            analysis="Average Selic rate by month (Historical)"
+            analysis={t.seasonalityDesc}
             highlight=""
           >
               <SeasonalHeatmap data={data} />
           </InsightCard>
 
           <InsightCard
-            title="Interactive ROI"
+            title={t.interactiveRoi}
             icon={<Activity className="w-5 h-5 text-green-500" />}
             color="text-green-600 dark:text-green-400"
-            analysis="Simulate returns based on current rates"
+            analysis={t.roiDesc}
             highlight=""
           >
               <InvestmentSimulator currentRate={currentRate} />
@@ -246,10 +246,10 @@ export const AnalyticsDashboard: React.FC<Props> = ({ data }) => {
 
        <div className="grid grid-cols-1 gap-8">
            <InsightCard
-            title="6-Month Forecast Model"
+            title={t.forecastModel}
             icon={<LineIcon className="w-5 h-5 text-pink-500" />}
             color="text-pink-600 dark:text-pink-400"
-            analysis="Linear regression projection based on last 12 months trend"
+            analysis={t.forecastDesc}
             highlight=""
           >
               <RateProjection data={data} />
