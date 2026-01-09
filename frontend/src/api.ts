@@ -4,6 +4,10 @@ import { SelicDataPoint, IngestResponse, HealthCheck, MetaSelicData } from './ty
 // In development, Vite proxies /v1 to localhost:8000
 const API_BASE = import.meta.env.VITE_API_URL || '';
 
+// DEBUG: Verificar no Console do navegador (F12) se a URL está correta
+console.log('Ambiente:', import.meta.env.MODE);
+console.log('API Base URL conectada:', API_BASE ? API_BASE : 'Vazio (Usando Proxy Local ou Erro)');
+
 export const api = {
     getHealth: async (): Promise<HealthCheck> => {
         const response = await axios.get<HealthCheck>(`${API_BASE}/v1/health`);
