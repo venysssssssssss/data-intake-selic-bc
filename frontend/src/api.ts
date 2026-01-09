@@ -2,7 +2,8 @@ import axios from 'axios';
 import { SelicDataPoint, IngestResponse, HealthCheck, MetaSelicData } from './types';
 
 // In development, Vite proxies /v1 to localhost:8000
-const API_BASE = import.meta.env.VITE_API_URL || '';
+// Ensure no trailing slash
+const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
 
 // DEBUG: Verificar no Console do navegador (F12) se a URL está correta
 console.log('Ambiente:', import.meta.env.MODE);

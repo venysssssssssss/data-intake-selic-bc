@@ -5,6 +5,21 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Data Intake Pro</title>
+    <script>
+      // Global error handler for resource loading failures (capture phase)
+      window.addEventListener('error', function(event) {
+        if (event.target && (event.target.tagName === 'SCRIPT' || event.target.tagName === 'LINK')) {
+           const url = event.target.src || event.target.href;
+           const msg = `Failed to load resource: ${url}`;
+           console.error(msg);
+           const errorDiv = document.getElementById('loader-error') || document.createElement('div');
+           errorDiv.id = 'loader-error';
+           errorDiv.style.cssText = 'position:fixed;top:0;left:0;width:100%;background:rgba(0,0,0,0.9);color:red;padding:20px;z-index:9999;font-family:monospace;';
+           errorDiv.innerHTML += `<p>${msg}</p>`;
+           document.body.appendChild(errorDiv);
+        }
+      }, true);
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -23,6 +23,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def read_root():
+    return {"status": "online", "message": "Data Intake Pro Backend is running. Access endpoints at /v1/..."}
+
 @app.on_event("startup")
 def startup_event():
     database.init_db()
