@@ -3,7 +3,10 @@ import { SelicDataPoint } from '../types';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, ReferenceLine, AreaChart, Area } from 'recharts';
 import { useUi } from '../contexts/UiContext';
 import { analyzeData, DetailedAnalysis } from '../utils/analyticsEngine';
-import { TrendingUp, TrendingDown, Activity, History, ArrowRight, Anchor, Gauge } from 'lucide-react';
+import { TrendingUp, TrendingDown, Activity, History, ArrowRight, Anchor, Gauge, Calendar, LineChart as LineIcon } from 'lucide-react';
+import { SeasonalHeatmap } from './SeasonalHeatmap';
+import { RateProjection } from './RateProjection';
+import { InvestmentSimulator } from './InvestmentSimulator';
 
 interface Props {
   data: SelicDataPoint[];
@@ -12,24 +15,27 @@ interface Props {
 const InsightCard: React.FC<{ 
     title: string; 
     icon: React.ReactNode; 
-    analysis: string; 
-    highlight: string;
-    color: string;
+    analysis?: string; 
+    highlight?: string;
+    color?: string;
+    className?: string;
     children: React.ReactNode 
-}> = ({ title, icon, analysis, highlight, color, children }) => (
-    <div className="bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 overflow-hidden">
+}> = ({ title, icon, analysis, highlight, color, className = "", children }) => (
+    <div className={`bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-100 dark:border-slate-700 overflow-hidden ${className}`}>
         <div className="p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-start">
             <div>
                 <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100 flex items-center gap-2">
                     {icon}
                     {title}
                 </h3>
-                <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
-                    {analysis} <span className={`font-bold ${color}`}>{highlight}</span>
-                </p>
+                {analysis && (
+                    <p className="mt-2 text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                        {analysis} <span className={`font-bold ${color}`}>{highlight}</span>
+                    </p>
+                )}
             </div>
         </div>
-        <div className="p-6 bg-slate-50 dark:bg-slate-900/50">
+        <div className="p-6 bg-slate-50 dark:bg-slate-900/50 h-full">
             {children}
         </div>
     </div>
@@ -65,6 +71,8 @@ export const AnalyticsDashboard: React.FC<Props> = ({ data }) => {
       });
       return counts.map((count, i) => ({ range: `${bins[i]}-${bins[i+1]}%`, count }));
   }, [chartData]);
+
+  const currentRate = chartData.length > 0 ? chartData[chartData.length - 1].value : 0;
 
   if (data.length < 12) return null;
 
@@ -211,6 +219,42 @@ export const AnalyticsDashboard: React.FC<Props> = ({ data }) => {
           </InsightCard>
 
       </div>
+
+      {/* NEW SECTION: Predictive & Seasonal */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <InsightCard
+            title="Seasonality Analysis"
+            icon={<Calendar className="w-5 h-5 text-indigo-500" />}
+            color="text-indigo-600 dark:text-indigo-400"
+            className="lg:col-span-2"
+            analysis="Average Selic rate by month (Historical)"
+            highlight=""
+          >
+              <SeasonalHeatmap data={data} />
+          </InsightCard>
+
+          <InsightCard
+            title="Interactive ROI"
+            icon={<Activity className="w-5 h-5 text-green-500" />}
+            color="text-green-600 dark:text-green-400"
+            analysis="Simulate returns based on current rates"
+            highlight=""
+          >
+              <InvestmentSimulator currentRate={currentRate} />
+          </InsightCard>
+      </div>
+
+       <div className="grid grid-cols-1 gap-8">
+           <InsightCard
+            title="6-Month Forecast Model"
+            icon={<LineIcon className="w-5 h-5 text-pink-500" />}
+            color="text-pink-600 dark:text-pink-400"
+            analysis="Linear regression projection based on last 12 months trend"
+            highlight=""
+          >
+              <RateProjection data={data} />
+          </InsightCard>
+       </div>
     </div>
   );
 };

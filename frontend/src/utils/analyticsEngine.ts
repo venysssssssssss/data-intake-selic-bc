@@ -116,3 +116,61 @@ export const analyzeData = (data: SelicDataPoint[]): DetailedAnalysis => {
         momentum: { shortTermSlope: shortSlope, longTermSlope: longSlope, signal }
     };
 };
+
+export const calculateSeasonality = (data: SelicDataPoint[]) => {
+    // Group by month (0-11)
+    const monthStats: Record<number, { sum: number; count: number }> = {};
+    
+    data.forEach(d => {
+        const date = parseDate(d.data);
+        const month = date.getMonth();
+        const val = parseFloat(d.valor as any); // Safe cast
+        
+        if (!monthStats[month]) monthStats[month] = { sum: 0, count: 0 };
+        monthStats[month].sum += val;
+        monthStats[month].count++;
+    });
+
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return months.map((name, i) => ({
+        month: name,
+        avg: monthStats[i] ? parseFloat((monthStats[i].sum / monthStats[i].count).toFixed(2)) : 0
+    }));
+};
+
+export const calculateProjection = (data: SelicDataPoint[], monthsForward = 6) => {
+    if (data.length < 12) return [];
+
+    const sorted = [...data].sort((a, b) => parseDate(a.data).getTime() - parseDate(b.data).getTime());
+    const recent = sorted.slice(-12);
+    const values = recent.map(d => parseFloat(d.valor as any));
+
+    // Linear Regression
+    const n = values.length;
+    let sumX = 0, sumY = 0, sumXY = 0, sumXX = 0;
+    for (let i = 0; i < n; i++) {
+        sumX += i;
+        sumY += values[i];
+        sumXY += i * values[i];
+        sumXX += i * i;
+    }
+    const slope = (n * sumXY - sumX * sumY) / (n * sumXX - sumX * sumX);
+    const intercept = (sumY - slope * sumX) / n;
+
+    const lastDate = parseDate(sorted[sorted.length-1].data);
+    const projection = [];
+
+    for (let i = 1; i <= monthsForward; i++) {
+        const nextDate = new Date(lastDate);
+        nextDate.setMonth(lastDate.getMonth() + i);
+        const val = intercept + slope * (n - 1 + i);
+        
+        projection.push({
+            date: nextDate.toLocaleDateString('pt-BR'),
+            value: Math.max(0, parseFloat(val.toFixed(2))), // Clamp to 0
+            type: 'projected'
+        });
+    }
+
+    return projection;
+};
