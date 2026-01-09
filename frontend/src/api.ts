@@ -2,7 +2,7 @@ import axios from 'axios';
 import { SelicDataPoint, IngestResponse, HealthCheck, MetaSelicData } from './types';
 
 // In development, Vite proxies /v1 to localhost:8000
-const API_BASE = ''; 
+const API_BASE = import.meta.env.VITE_API_URL || '';
 
 export const api = {
     getHealth: async (): Promise<HealthCheck> => {
